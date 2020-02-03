@@ -1,0 +1,7 @@
+
+_files:
+  - "{{_dir}}/pubspec.yaml.temp"
+  - "{{_dir}}/lib/dependency.dart.temp"
+_buildPropertyPath: lib/build_const.dart
+
+enable_share: true

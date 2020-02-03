@@ -1,0 +1,25 @@
+// if: enable_share
+import 'package:share/share.dart';
+
+dependency() {
+  // if: enable_share
+  Share.share("");
+  // if: !enable_share
+  "sample text";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
