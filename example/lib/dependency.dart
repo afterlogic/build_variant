@@ -1,7 +1,6 @@
-import 'package:share/share.dart';
 
 dependency() {
-  Share.share("");
+  "sample text";
 }
 
 

@@ -18,6 +18,9 @@ class VariableMap {
   List<Variable> get listVariable =>
       variables.where((item) => item is Variable<List>).toList();
 
+  List<Variable> get mapVariable =>
+      variables.where((item) => item is Variable<Map>).toList();
+
   List<Variable> get publicVariable =>
       variables.where((item) => item.isPublic).toList();
 
@@ -32,6 +35,8 @@ class VariableMap {
       variables.add(Variable<String>(key, value, this));
     } else if (value is List) {
       variables.add(Variable<List>(key, value, this));
+    } else if (value is Map) {
+      variables.add(Variable<Map>(key, value, this));
     } else {
       variables.add(Variable(key, value, this));
     }
@@ -94,6 +99,21 @@ class Variable<T> {
           return item;
         }
       }).toList() as T;
+    }
+    if (value is Map) {
+      return (value as Map).map((key, value) {
+        final newKey = Mask.replaceVariable(
+          key.toString(),
+          parent,
+          (variableKey) => throw VariableNotFound.inVariable(variableKey, key),
+        );
+        final newValue = Mask.replaceVariable(
+          value.toString(),
+          parent,
+          (variableKey) => throw VariableNotFound.inVariable(variableKey, key),
+        );
+        return MapEntry(newKey, newValue);
+      }) as T;
     }
     return value;
   }

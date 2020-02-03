@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:build_variant/src/copy_file.dart';
 import 'package:build_variant/src/property_builder.dart';
 import 'package:build_variant/src/template_builder.dart';
 import 'package:build_variant/src/util/file_util.dart';
@@ -14,8 +15,6 @@ buildVariant(
   try {
     String variablePath = _variablePath;
     print("from: $variablePath\n");
-
-    final List filesPath = [];
 
     //variable
     final defaultVariableFile =
@@ -63,6 +62,7 @@ buildVariant(
       orElse: () => null,
     );
 
+    final List filesPath = [];
     if (files != null) {
       filesPath.addAll(files.formatValue.map((item) => item.toString()));
     }
@@ -71,6 +71,22 @@ buildVariant(
       await TemplateBuilder(
               fileFromPath(directory.path, path).path, variableMap)
           .build();
+    }
+    //copy
+    final filesToCopy = variableMap.mapVariable.firstWhere(
+      (item) => item.key == "_copy",
+      orElse: () => null,
+    );
+
+    final List<MapEntry> filesToCopyPath = [];
+    if (files != null) {
+      filesToCopyPath.addAll((filesToCopy.formatValue as Map).entries);
+    }
+    for (var entry in filesToCopyPath) {
+      await CopyFile(
+        fileFromPath(directory.path, entry.key).path,
+        fileFromPath(directory.path, entry.value).path,
+      ).build();
     }
   } catch (e, s) {
     print("STACK_TRACE___________________________");

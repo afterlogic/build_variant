@@ -7,7 +7,7 @@ import '../lib/build_variant.dart';
 void main() {
   test('main test', () async {
     await buildVariant(
-      Directory.current.parent,
+      Directory(Directory.current.path + "/example"),
       null,
     );
   });

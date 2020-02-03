@@ -1,7 +1,8 @@
-
 _files:
   - "{{_dir}}/pubspec.yaml.temp"
   - "{{_dir}}/lib/dependency.dart.temp"
+_copy:
+  "{{_dir}}/README.md": "{{_dir}}/lib/newFile.md"
 _buildPropertyPath: lib/build_const.dart
 
-enable_share: true
+enable_share: false
