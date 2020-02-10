@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:build_variant/src/mask.dart';
@@ -30,7 +31,7 @@ class TemplateBuilder {
   }
 
   Future build() async {
-    final lines = (await inputFile.readAsString()).split(RegExp("\\r|\\n"));
+    final lines = LineSplitter().convert((await inputFile.readAsString()));
     List<int> endLines = [];
 
     for (var index = lines.length - 1; index >= 0; index--) {

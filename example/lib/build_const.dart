@@ -1,3 +1,3 @@
 class BuildProperty {
-  static const enable_share = true;
+  static const enable_share = false;
 }
