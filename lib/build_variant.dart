@@ -10,10 +10,10 @@ import 'src/parse_variable.dart';
 
 buildVariant(
   Directory directory,
-  String _variablePath,
+  String? _variablePath,
 ) async {
   try {
-    String variablePath = _variablePath;
+    String? variablePath = _variablePath;
     print("from: $variablePath\n");
 
     //variable
@@ -22,10 +22,11 @@ buildVariant(
 
     VariableMap variableMap = await ParseVariable(defaultVariableFile).parse();
 
-    final buildVariantPath = variableMap.stringVariable.firstWhere(
+    var index = variableMap.stringVariable.indexWhere(
       (item) => item.key == "_buildVariant",
-      orElse: () => null,
     );
+    final buildVariantPath =
+        index == -1 ? null : variableMap.stringVariable[index];
 
     variablePath ??= buildVariantPath?.formatValue;
 
@@ -45,10 +46,11 @@ buildVariant(
     });
 
     // property
-    var buildPropertyPath = variableMap.stringVariable
-        .firstWhere((item) => item.key == "_buildPropertyPath",
-            orElse: () => null)
-        ?.value;
+    index = variableMap.stringVariable.indexWhere(
+      (item) => item.key == "_buildPropertyPath",
+    );
+    var buildPropertyPath =
+        index == -1 ? null : variableMap.stringVariable[index].value;
 
     buildPropertyPath ??= "lib/build_const.dart";
 
@@ -57,10 +59,10 @@ buildVariant(
     await PropertyBuilder(buildConstFile, variableMap).build();
 
     //files
-    final files = variableMap.listVariable.firstWhere(
+    index = variableMap.stringVariable.indexWhere(
       (item) => item.key == "_files",
-      orElse: () => null,
     );
+    final files = index == -1 ? null : variableMap.listVariable[index];
 
     final List filesPath = [];
     if (files != null) {
@@ -73,14 +75,14 @@ buildVariant(
           .build();
     }
     //copy
-    final filesToCopy = variableMap.mapVariable.firstWhere(
-      (item) => item.key == "_copy",
-      orElse: () => null,
+    index = variableMap.stringVariable.indexWhere(
+          (item) => item.key == "_copy",
     );
+    final filesToCopy = index == -1 ? null : variableMap.mapVariable[index];
 
     final List<MapEntry> filesToCopyPath = [];
     if (files != null) {
-      filesToCopyPath.addAll((filesToCopy.formatValue as Map).entries);
+      filesToCopyPath.addAll((filesToCopy?.formatValue as Map).entries);
     }
     for (var entry in filesToCopyPath) {
       await CopyFile(

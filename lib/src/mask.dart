@@ -24,7 +24,7 @@ class Mask {
 
       final variable = variableMap.variables.firstWhere(
         (item) => item.key == variableKey,
-        orElse: () => throw variableNotFound(variableKey),
+        orElse: () => throw variableNotFound(variableKey ?? 'null'),
       );
 
       text = text.replaceRange(

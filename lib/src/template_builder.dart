@@ -85,20 +85,20 @@ class TemplateBuilder {
     RegExpMatch ifMatch,
     int index,
     List<int> endLines,
-    List<String> lines,
+    List<String?> lines,
   ) {
     var variableKey = ifMatch.namedGroup(Mask.variableKey);
 
     var isNegative = false;
-    if (variableKey.startsWith("!")) {
-      variableKey = variableKey.substring(1);
+    if (variableKey?.startsWith("!") == true) {
+      variableKey = variableKey?.substring(1);
       isNegative = true;
     }
 
     final variable = variableMap.boolVariable.firstWhere(
       (item) => item.key == variableKey,
-      orElse: () =>
-          throw VariableNotFound.inTemplate(variableKey, inputFile.path, index),
+      orElse: () => throw VariableNotFound.inTemplate(
+          variableKey ?? 'null', inputFile.path, index),
     );
 
     var remove = !variable.value;
@@ -106,7 +106,7 @@ class TemplateBuilder {
       remove = !remove;
     }
 
-    int endLine;
+    int? endLine;
     int startLine = index;
     if (endLines.isNotEmpty) {
       endLine = endLines.last;

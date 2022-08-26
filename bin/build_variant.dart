@@ -3,7 +3,7 @@ import 'dart:io';
 import '../lib/build_variant.dart';
 
 main(List<String> args) async {
-  String variable;
+  String? variable;
 
   if (args.isNotEmpty) {
     variable = args.first;
