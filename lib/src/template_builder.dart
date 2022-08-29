@@ -31,27 +31,32 @@ class TemplateBuilder {
   }
 
   Future build() async {
-    final lines = LineSplitter().convert((await inputFile.readAsString()));
+    final List<String?> lines = [];
+    lines.addAll(
+      LineSplitter().convert(
+        (await inputFile.readAsString()),
+      ),
+    );
     List<int> endLines = [];
 
     for (var index = lines.length - 1; index >= 0; index--) {
       final line = lines[index];
 
-      final ifMatch = Mask.startIf.firstMatch(line);
+      final ifMatch = Mask.startIf.firstMatch(line ?? 'null');
       if (ifMatch != null) {
         _openIf(ifMatch, index, endLines, lines);
         continue;
       }
 
-      final endIfMatch = Mask.endIf.firstMatch(line);
+      final endIfMatch = Mask.endIf.firstMatch(line ?? 'null');
       if (endIfMatch != null) {
         endLines.add(index);
         continue;
       }
 
-      final variableMatch = Mask.variable.allMatches(line);
+      final variableMatch = Mask.variable.allMatches(line ?? 'null');
       if (variableMatch.isNotEmpty) {
-        _variable(variableMatch, index, line, lines);
+        _variable(variableMatch, index, line ?? 'null', lines);
         continue;
       }
     }
@@ -67,7 +72,7 @@ class TemplateBuilder {
     Iterable<RegExpMatch> variableMatch,
     int lineIndex,
     String _line,
-    List<String> lines,
+    List<String?> lines,
   ) {
     final line = Mask.replaceVariable(
       _line,

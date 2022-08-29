@@ -59,7 +59,7 @@ buildVariant(
     await PropertyBuilder(buildConstFile, variableMap).build();
 
     //files
-    index = variableMap.stringVariable.indexWhere(
+    index = variableMap.listVariable.indexWhere(
       (item) => item.key == "_files",
     );
     final files = index == -1 ? null : variableMap.listVariable[index];
@@ -75,7 +75,7 @@ buildVariant(
           .build();
     }
     //copy
-    index = variableMap.stringVariable.indexWhere(
+    index = variableMap.mapVariable.indexWhere(
           (item) => item.key == "_copy",
     );
     final filesToCopy = index == -1 ? null : variableMap.mapVariable[index];
