@@ -6,7 +6,8 @@ import 'package:dart_style/dart_style.dart';
 class PropertyBuilder {
   final File outputFile;
   final VariableMap variableMap;
-  final dartFormatted = DartFormatter();
+  final dartFormatted =
+      DartFormatter(languageVersion: DartFormatter.latestLanguageVersion);
   static const outputPath = "/lib/build_const.dart";
 
   PropertyBuilder(this.outputFile, this.variableMap);
